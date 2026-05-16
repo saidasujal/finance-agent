@@ -8,7 +8,7 @@ load_dotenv()
 API_KEY = os.environ.get('GEMINI_API_KEY', '')
 client = genai.Client(api_key=API_KEY)
 
-MODEL_NAME = 'gemini-2.0-flash-lite'
+MODEL_NAME = 'gemini-2.5-flash'
 
 def parse_expense(user_message):
     """Extracts amount, category, and description from a user message."""
