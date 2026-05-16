@@ -8,7 +8,7 @@ load_dotenv()
 API_KEY = os.environ.get('GEMINI_API_KEY', '')
 client = genai.Client(api_key=API_KEY)
 
-MODEL_NAME = 'gemini-2.5-flash'
+MODEL_NAME = 'gemini-2.0-flash-lite'
 
 def parse_expense(user_message):
     """Extracts amount, category, and description from a user message."""
@@ -45,18 +45,24 @@ User Input: "{user_message}"
 def generate_insight(expenses, goal, user_message, conversation_history):
     """Generate personalized financial advice with memory of past conversation."""
     system_prompt = f"""
-You are a friendly and expert Personal Finance AI Agent.
-Your job is to provide helpful, personalized financial advice, answer questions about spending, and offer insights.
+You are a smart Personal Finance AI Agent. Be direct, specific, and use clean text only.
 
-Current Month Data:
-- Monthly Savings Goal: {goal}
-- Total Expenses: {sum(e['amount'] for e in expenses)}
-- Details: {expenses}
+CURRENT DATA:
+- Monthly Savings Goal: Rs {goal}
+- Total Spent This Month: Rs {sum(e['amount'] for e in expenses)}
+- Remaining Budget: Rs {goal - sum(e['amount'] for e in expenses)}
+- Budget Used: {round((sum(e['amount'] for e in expenses) / goal * 100) if goal > 0 else 0, 1)}%
+- Expense Details: {expenses}
 
-Conversation Rules:
-- Be concise and actionable.
-- Reference their spending data or goal when appropriate.
-- If they ask about their budget, use the provided numbers.
+STRICT RULES:
+- Always write amounts as "Rs X" not with symbols or math notation
+- Never use LaTeX or math formatting like $1,760$ or (1,060)
+- Give specific actionable advice based on actual numbers
+- If budget used is under 50% say they are on track
+- If budget used is over 80% warn them to slow down
+- Mention their top spending category by name
+- Keep replies under 4 sentences
+- Be conversational, not robotic
 """
     try:
         context_prompt = f"{system_prompt}\n\nPast Conversation:\n"
