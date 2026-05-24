@@ -52,10 +52,10 @@ The core theme values are registered as CSS custom properties under the `:root` 
   --text-muted: #3e4c63;      /* Placeholder text / disabled / axis lines */
 
   /* Frosted Glass Properties */
-  --glass-bg: rgba(13, 17, 23, 0.6);
-  --glass-bg-hover: rgba(22, 27, 34, 0.8);
-  --glass-border: rgba(255, 255, 255, 0.04);
-  --glass-border-hover: rgba(0, 229, 255, 0.5);
+  --glass-bg: rgba(13, 20, 35, 0.55);
+  --glass-bg-hover: rgba(22, 30, 48, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(0, 229, 255, 0.65);
 
   /* Shadows, Elevations, and Borders */
   --shadow-flat: 0 4px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -115,21 +115,28 @@ To avoid flat gradient banding, a full-screen fixed texture is rendered over all
     opacity: 0.035;
     ```
 
+### 4.3 Cyber-Grid Background Overlay
+To give the landing page depth and structure, a high-tech vector grid is overlayed behind the content:
+*   **Method**: `.grid-overlay` absolute div within `.aurora-bg` container.
+*   **Grid Lines**: Repeating horizontal and vertical lines (`rgba(255, 255, 255, 0.02)`) spaced at `60px`.
+*   **Depth Blend**: Soft radial mask fades the grid lines near the screen edges (`mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.1) 80%)`).
+*   **Refraction**: When floating glass elements (`.glass`) are hovered or animated, the grid lines blur and warp behind the card borders, emphasizing the glassmorphic aesthetics.
+
 ---
 
 ## 5. Navigational Layout: Sidebar & Nav Pill
 
-Navigation is locked to the viewport using a premium, floating, left-aligned sidebar:
+Navigation is locked to the viewport using a premium, vertical sidebar attached to the top-left side:
 
-*   **Structure**: Positioned `fixed` at `left: 14px`, `top: 50%`, translating vertical center `transform: translateY(-50%)`.
-*   **Dimensions**: Width is set to `64px`. Rounded border-radius of `24px`. Frosted glass body with a `backdrop-filter: blur(28px) saturate(200%)`.
+*   **Structure**: Positioned `fixed` at `left: 14px`, `top: 14px`.
+*   **Dimensions**: Width is set to `80px`, Height is `auto` (wraps content). Rectangular container with premium rounded corners (`border-radius: 16px`). Dark glassmorphic background (`background: rgba(13, 20, 35, 0.82)`) with a high-end top border highlight (`border-top: 1px solid rgba(255, 255, 255, 0.16)`) and side borders for excellent contrast.
 *   **Glow Indicator Pill (`#nav-pill`)**:
     *   A single visual accent pill is positioned absolutely inside the sidebar.
-    *   **Style**: Width is `48px`, Height is `48px`, Border-radius `16px`, background `rgba(0, 229, 255, 0.12)`, border `1.5px solid rgba(0, 229, 255, 0.4)`.
+    *   **Style**: Width is `60px`, Height is `60px`, Border-radius `12px`, background `rgba(0, 229, 255, 0.15)`, border `1.5px solid rgba(0, 229, 255, 0.45)`.
     *   **Animation**: When a user scrolls to or clicks a navigation item, the pill dynamically updates its `top` position using a smooth transition: `transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1)`.
 *   **Nav Items (`.nav-item`)**:
-    *   Contain small emojis (`.nav-icon`) at `17px` and text descriptions (`.nav-label`) at `8px` uppercase.
-    *   **Hover/Active Transition**: Hover shifts the item `translateX(4px)` and transitions text color to `--accent-hover`.
+    *   Contain emojis (`.nav-icon`) at `22px` and text descriptions (`.nav-label`) at `9px` uppercase.
+    *   **Hover/Active Transition**: Hover adds a floating glass card background (`rgba(255, 255, 255, 0.12)`), shifts the item horizontally (`transform: translateX(8px) scale(1.08)`), elevates it with z-index (`z-index: 10`), and transitions text color to `--accent-hover`. Active state is transparent, allowing the sliding `#nav-pill` to show cleanly without overlapping borders.
 
 ---
 
@@ -254,7 +261,16 @@ Renders a grid mapping spending intensity over 90 days.
     *   Hovering over any cell reveals a tooltip indicating date and transaction volume.
     *   **Tooltip style**: Matte black background with a Cyber Blue border, positioned `8px` above the cell with a custom pointing chevron (`::after` bottom border).
 
-### 7.3 CLI Terminal Overlay
+### 7.3 AI Portfolio Projection Chart (Hero Page)
+An interactive line/area chart placed next to the main hero copy to showcase NexFi's AI-optimized financial growth.
+*   **Structure**: Embedded inside a glassmorphic card (`.hero-chart-card`) with a stats layout:
+    *   `Traditional Balance`: ₹22,000 (violet)
+    *   `AI-Optimized Balance`: ₹52,000 (glowing electric cyber blue)
+*   **Line 1 (AI Optimized - NexFi)**: Solid electric cyber blue line (`#00e5ff`) with custom linear gradient area fill fading down to transparent. Tension `0.4`.
+*   **Line 2 (Traditional Savings)**: Dashed violet line (`#7c3aed`) with custom light violet linear gradient area fill. Tension `0.1`.
+*   **Chart Options**: Custom legend rendering, responsive aspect ratio adjustments, and high-fidelity tooltips displaying currency formatted values.
+
+### 7.4 CLI Terminal Overlay
 A developers' high-tech console overlay.
 
 *   **Toggle Button (`#cli-toggle-btn`)**: A floating circular trigger at the bottom-right corner (`>_`). Features a Cyber Blue border and active text centering. Hovering lifts the trigger and turns it solid Cyber Blue.

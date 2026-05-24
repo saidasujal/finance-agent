@@ -18,6 +18,14 @@ init_db()
 def index():
     return send_from_directory('.', 'index.html')
 
+@app.route('/<path:filename>')
+def serve_asset(filename):
+    """Serve static assets (images, CSS, JS) from project directory."""
+    allowed_ext = ('.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.css', '.js', '.woff', '.woff2')
+    if filename.endswith(allowed_ext):
+        return send_from_directory('.', filename)
+    return '', 404
+
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.json

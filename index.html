@@ -8,11 +8,11 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js'></script>
   <style>
 :root {
-  /* Core Palette (Deep Charcoal) */
-  --bg-primary: #06080d;
-  --bg-primary-rgb: 6, 8, 13;
-  --bg-secondary: #0d1117;
-  --bg-tertiary: #161b22;
+  /* Core Palette (Deep Midnight SaaS) */
+  --bg-primary: #080c15;
+  --bg-primary-rgb: 8, 12, 21;
+  --bg-secondary: #090d16;
+  --bg-tertiary: #111724;
 
   /* Interactive Accent: Electric Cyber Blue */
   --accent-primary: #00e5ff;
@@ -34,16 +34,16 @@
   --data-purple: #8b5cf6;
   --data-rose: #ef4444;
 
-  /* Text Colors */
-  --text-primary: #e2e8f0;
-  --text-secondary: #8b9cb7;
-  --text-muted: #3e4c63;
+  /* Text Colors (AA/AAA Compliant) */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
 
   /* Glass Card Properties */
-  --glass-bg: rgba(13, 17, 23, 0.6);
-  --glass-bg-hover: rgba(22, 27, 34, 0.8);
-  --glass-border: rgba(255, 255, 255, 0.04);
-  --glass-border-hover: rgba(0, 229, 255, 0.5);
+  --glass-bg: rgba(6, 10, 18, 0.72);
+  --glass-bg-hover: rgba(9, 15, 28, 0.88);
+  --glass-border: #3b4b60;
+  --glass-border-hover: #00bcd4;
 
   /* Shadows & Elevations */
   --shadow-flat: 0 4px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -62,10 +62,33 @@
 
 body { 
   font-family: 'Inter', sans-serif; 
-  background: var(--bg-primary); 
+  background-color: #060a12;
+  background-image:
+    /* Mesh gradient overlays for depth and color */
+    radial-gradient(ellipse 90% 40% at 50% -5%, hsla(220, 60%, 35%, 0.30) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 50% at 8% 25%, hsla(250, 70%, 45%, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 55% at 92% 65%, hsla(190, 80%, 45%, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 40% at 18% 90%, hsla(280, 55%, 40%, 0.12) 0%, transparent 50%),
+    /* Finance AI illustration background */
+    url('bg-finance.png');
+  background-attachment: fixed;
+  background-size: auto, auto, auto, auto, cover;
+  background-position: center, center, center, center, center;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
   color: var(--text-primary); 
   overflow-x: hidden; 
   line-height: 1.6;
+}
+
+/* Dark vignette overlay — darkens bg image so content stays readable */
+.bg-darken-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: 
+    /* Very subtle center darken — lets the illustration show through clearly */
+    radial-gradient(ellipse 80% 70% at 50% 40%, rgba(6, 10, 18, 0.20) 0%, rgba(6, 10, 18, 0.55) 60%, rgba(6, 10, 18, 0.72) 100%);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -106,7 +129,7 @@ body::after {
   inset: 0;
   z-index: 9000;
   pointer-events: none;
-  opacity: 0.035;
+  opacity: 0.032;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 256px 256px;
@@ -123,38 +146,38 @@ body::after {
 .aurora-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(90px);
   will-change: transform;
-  opacity: 0.25;
+  opacity: 0.30;
 }
 .aurora-blob:nth-child(1) {
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(0, 229, 255, 0.5) 0%, transparent 70%);
-  top: -15%; left: -10%;
-  animation: aurora1 20s ease-in-out infinite alternate;
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.55) 0%, transparent 65%);
+  top: -15%; left: -8%;
+  animation: aurora1 25s ease-in-out infinite alternate;
 }
 .aurora-blob:nth-child(2) {
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.4) 0%, transparent 70%);
-  bottom: -15%; right: -8%;
-  animation: aurora2 26s ease-in-out infinite alternate;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.45) 0%, transparent 65%);
+  bottom: -15%; right: -5%;
+  animation: aurora2 30s ease-in-out infinite alternate;
 }
 .aurora-blob:nth-child(3) {
-  width: 450px; height: 450px;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.35) 0%, transparent 70%);
-  top: 40%; left: 35%;
-  animation: aurora3 22s ease-in-out infinite alternate;
+  width: 650px; height: 650px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.40) 0%, transparent 65%);
+  top: 40%; left: 25%;
+  animation: aurora3 26s ease-in-out infinite alternate;
 }
 .aurora-blob:nth-child(4) {
-  width: 350px; height: 350px;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.25) 0%, transparent 70%);
-  top: 15%; right: 20%;
-  animation: aurora4 28s ease-in-out infinite alternate;
+  width: 550px; height: 550px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.30) 0%, transparent 65%);
+  top: 12%; right: 12%;
+  animation: aurora4 32s ease-in-out infinite alternate;
 }
-@keyframes aurora1 { from { transform: translate(0, 0) scale(1); } to { transform: translate(100px, 80px) scale(1.15); } }
-@keyframes aurora2 { from { transform: translate(0, 0) scale(1); } to { transform: translate(-80px, -60px) scale(0.9); } }
-@keyframes aurora3 { from { transform: translate(0, 0) scale(1); } to { transform: translate(60px, -90px) scale(1.1); } }
-@keyframes aurora4 { from { transform: translate(0, 0) scale(1); } to { transform: translate(-50px, 70px) scale(0.95); } }
+@keyframes aurora1 { from { transform: translate(0, 0) scale(1); } to { transform: translate(120px, 90px) scale(1.15); } }
+@keyframes aurora2 { from { transform: translate(0, 0) scale(1); } to { transform: translate(-100px, -80px) scale(0.9); } }
+@keyframes aurora3 { from { transform: translate(0, 0) scale(1); } to { transform: translate(80px, -110px) scale(1.1); } }
+@keyframes aurora4 { from { transform: translate(0, 0) scale(1); } to { transform: translate(-70px, 90px) scale(0.95); } }
 
 @media (prefers-reduced-motion: reduce) {
   .aurora-blob { animation: none !important; }
@@ -168,30 +191,39 @@ body::after {
 .glass {
   position: relative;
   border-radius: 20px;
-  border: 1px solid var(--glass-border);
+  border: 2px solid var(--glass-border);
   background: var(--glass-bg);
-  box-shadow: var(--shadow-flat);
+  /* Tactile double border & deep elevation drop shadows */
+  box-shadow: 
+    0 12px 40px -10px rgba(0, 0, 0, 0.65), 
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03);
   transition:
     transform var(--transition-normal),
     box-shadow var(--transition-normal),
     border-color var(--transition-normal),
+    border-width var(--transition-normal),
     background-color var(--transition-normal);
   overflow: hidden;
 }
 .glass::before {
   content: ''; position: absolute; inset: 0; border-radius: inherit;
-  background: rgba(255,255,255,0.015);
-  backdrop-filter: blur(24px) saturate(200%) brightness(100%);
-  -webkit-backdrop-filter: blur(24px) saturate(200%) brightness(100%);
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(32px) saturate(220%) brightness(100%);
+  -webkit-backdrop-filter: blur(32px) saturate(220%) brightness(100%);
   z-index: 0; pointer-events: none;
 }
 .glass > * { position: relative; z-index: 2; }
 
 .glass:hover {
-  transform: translateY(-8px) scale(1.015);
+  transform: translateY(-12px) scale(1.02);
   border-color: var(--glass-border-hover);
+  border-width: 2.5px;
   background: var(--glass-bg-hover);
-  box-shadow: var(--shadow-raised);
+  box-shadow: 
+    0 24px 50px -12px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(0, 229, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 .feature-card { cursor: default; }
 
@@ -246,6 +278,29 @@ body::after {
   box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
 }
 
+.api-tab-btn {
+  background: none;
+  border: none;
+  color: rgba(241, 245, 249, 0.5);
+  font-family: "Geist Mono", monospace;
+  font-size: 12px;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s;
+  border-bottom: 2px solid transparent;
+}
+.api-tab-btn:hover {
+  color: rgba(241, 245, 249, 0.85);
+  background: rgba(255, 255, 255, 0.03);
+}
+.api-tab-btn.active-tab {
+  color: var(--accent-primary) !important;
+  border-bottom: 2px solid var(--accent-primary);
+  background: rgba(0, 229, 255, 0.08);
+}
+
+
 /* Form Inputs and Interactive Focus States */
 input[type="text"], input[type="number"] {
   outline: none;
@@ -256,37 +311,60 @@ input[type="text"]:focus, input[type="number"]:focus {
   box-shadow: 0 0 12px var(--accent-glow) !important;
 }
 
-.section { min-height: 100vh; padding: 80px 60px 80px 100px; position: relative; z-index: 1; }
+.uiverse-goal-input {
+  background: rgba(6, 8, 13, 0.6) !important;
+  border: 2px solid var(--glass-border) !important;
+  border-radius: 8px !important;
+  padding: 8px 12px 8px 24px !important;
+  color: #fff !important;
+  font-size: 13px !important;
+  width: 100px !important;
+  font-family: 'Geist Mono', monospace !important;
+  font-weight: 600 !important;
+  transition: all var(--transition-fast) !important;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.5) !important;
+}
+.uiverse-goal-input:focus {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.25), inset 0 1px 3px rgba(0,0,0,0.5) !important;
+  outline: none;
+}
+
+
+.section { min-height: 100vh; padding: 80px 60px 80px 130px; position: relative; z-index: 1; }
 
 /* Navigation Sidebar */
 #sidebar {
-  position: fixed; left: 14px; top: 50%; transform: translateY(-50%); z-index: 1000;
-  background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(28px) saturate(200%);
-  -webkit-backdrop-filter: blur(28px) saturate(200%);
-  border: 1px solid var(--glass-border); border-top: 1px solid rgba(255,255,255,0.18);
-  border-radius: 24px; padding: 14px 8px; display: flex; flex-direction: column; gap: 4px; width: 64px;
-  box-shadow: var(--shadow-flat), var(--shadow-inset);
-  transition: border-color var(--transition-normal);
+  position: fixed; left: 14px; top: 14px; z-index: 1000;
+  background: rgba(13, 20, 35, 0.82); backdrop-filter: blur(28px) saturate(210%);
+  -webkit-backdrop-filter: blur(28px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.08); border-top: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px; padding: 16px 10px; display: flex; flex-direction: column; gap: 6px; width: 80px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: border-color var(--transition-normal), background-color var(--transition-normal);
 }
 .nav-item {
   display: flex; flex-direction: column; align-items: center;
-  padding: 10px 6px; border-radius: 16px; cursor: pointer;
+  padding: 12px 6px; border-radius: 12px; cursor: pointer;
   transition: all var(--transition-normal); border: 1px solid transparent;
   position: relative;
+  height: 60px;
+  justify-content: center;
 }
 .nav-item:hover { 
-  background: var(--accent-glow-subtle); 
-  border-color: rgba(99, 102, 241, 0.2); 
-  transform: translateX(4px); 
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15); 
+  background: rgba(255, 255, 255, 0.12); 
+  border-color: rgba(0, 229, 255, 0.35); 
+  transform: translateX(8px) scale(1.08); 
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), 0 0 12px rgba(0, 229, 255, 0.2); 
+  z-index: 10;
 }
 .nav-item.active { 
-  background: rgba(99, 102, 241, 0.18); 
-  border-color: rgba(99, 102, 241, 0.45); 
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.25); 
+  background: transparent; 
+  border-color: transparent; 
+  box-shadow: none; 
 }
-.nav-icon { font-size: 17px; line-height: 1; }
-.nav-label { font-size: 8px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; font-weight: 500; }
+.nav-icon { font-size: 22px; line-height: 1; }
+.nav-label { font-size: 9px; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; text-align: center; font-weight: 600; transition: color var(--transition-normal); }
 .nav-item:hover .nav-label { color: var(--accent-hover); }
 .nav-item.active .nav-label { color: var(--accent-hover); }
 
@@ -319,8 +397,8 @@ input[type="text"]:focus, input[type="number"]:focus {
 .faq-item::before {
   content: ''; position: absolute; inset: 0; border-radius: inherit;
   background: rgba(255,255,255,0.02);
-  backdrop-filter: blur(20px) saturate(180%) brightness(100%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(100%);
+  backdrop-filter: blur(28px) saturate(210%) brightness(100%);
+  -webkit-backdrop-filter: blur(28px) saturate(210%) brightness(100%);
   z-index: 0; pointer-events: none;
 }
 .faq-item > * { position: relative; z-index: 2; }
@@ -497,13 +575,13 @@ input[type="text"]:focus, input[type="number"]:focus {
     /* Active Nav Pill highlight */
     #nav-pill {
       position: absolute;
-      left: 8px;
-      width: 48px;
-      height: 48px;
-      background: rgba(0, 229, 255, 0.12);
-      border: 1.5px solid rgba(0, 229, 255, 0.4);
-      box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
-      border-radius: 16px;
+      left: 10px;
+      width: 60px;
+      height: 60px;
+      background: rgba(0, 229, 255, 0.15);
+      border: 1.5px solid rgba(0, 229, 255, 0.45);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+      border-radius: 12px;
       transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 1;
       pointer-events: none;
@@ -919,11 +997,30 @@ input[type="text"]:focus, input[type="number"]:focus {
       transform: scale(1.2);
       z-index: 5;
     }
-    .heatmap-cell-0 { background-color: #1e293b; }
-    .heatmap-cell-1 { background-color: #0e3f5c; }
-    .heatmap-cell-2 { background-color: #0c628f; }
-    .heatmap-cell-3 { background-color: #0099cc; }
-    .heatmap-cell-4 { background-color: #00e5ff; }
+    .heatmap-cell-0 { 
+      background-color: rgba(255, 255, 255, 0.05); 
+      border: 1px solid rgba(255, 255, 255, 0.1); 
+    }
+    .heatmap-cell-1 { 
+      background-color: rgba(99, 102, 241, 0.25); 
+      border: 1px solid rgba(99, 102, 241, 0.45); 
+    }
+    .heatmap-cell-2 { 
+      background-color: rgba(124, 58, 237, 0.5); 
+      border: 1px solid rgba(124, 58, 237, 0.7); 
+      box-shadow: 0 0 4px rgba(124, 58, 237, 0.15);
+    }
+    .heatmap-cell-3 { 
+      background-color: rgba(0, 229, 255, 0.65); 
+      border: 1px solid rgba(0, 229, 255, 0.85); 
+      box-shadow: 0 0 6px rgba(0, 229, 255, 0.3);
+    }
+    .heatmap-cell-4 { 
+      background-color: #00e5ff; 
+      border: 1px solid #ffffff; 
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.6); 
+    }
+
 
     .heatmap-tooltip {
       visibility: hidden;
@@ -1087,11 +1184,216 @@ input[type="text"]:focus, input[type="number"]:focus {
       color: #94a3b8;
       border: 1px solid rgba(148, 163, 184, 0.3);
     }
+
+    /* Add the grid overlay styling */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      background-image: 
+        /* Dotted pattern — visible fine grain */
+        radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+        /* Grid lines (horizontal & vertical) — structural depth */
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 24px 24px, 80px 80px, 80px 80px;
+      background-position: center center;
+      pointer-events: none;
+      mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.3) 75%);
+      -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.3) 75%);
+    }
+
+    /* Split layout classes for hero section */
+    .hero-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding: 80px 20px 80px 20px;
+    }
+
+    .hero-content-split {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 56px;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .hero-left {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      min-width: 320px;
+    }
+
+    .hero-right {
+      flex: 1;
+      width: 100%;
+      max-width: 520px;
+      min-width: 320px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-badge {
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 999px;
+      padding: 6px 18px;
+      font-size: 12px;
+      color: var(--accent-hover);
+      margin-bottom: 24px;
+      letter-spacing: 0.05em;
+      display: inline-block;
+    }
+
+    .hero-title {
+      font-size: clamp(38px, 4.8vw, 68px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+
+    .hero-subtitle {
+      max-width: 520px;
+      color: rgba(241, 245, 249, 0.6);
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .hero-capsules {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    /* Ticker wrap margin adjustment */
+    .hero-container .ticker-wrap {
+      margin-top: 40px;
+    }
+
+    /* Responsive Overrides */
+    @media (max-width: 1024px) {
+      .hero-content-split {
+        flex-direction: column;
+        text-align: center;
+        gap: 48px;
+      }
+      .hero-left {
+        align-items: center;
+        text-align: center;
+      }
+      .hero-right {
+        max-width: 100%;
+      }
+      .hero-capsules {
+        justify-content: center;
+      }
+      .hero-buttons {
+        justify-content: center;
+      }
+    }
+
+    /* Premium Chart Card Styles */
+    .hero-chart-card {
+      width: 100%;
+      padding: 24px;
+      background: var(--glass-bg);
+      border: 2px solid var(--glass-border);
+      box-shadow: var(--shadow-raised);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .hero-chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .hero-chart-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .hero-chart-subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .hero-chart-badge {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--data-green);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-family: 'Geist Mono', monospace;
+      white-space: nowrap;
+    }
+    .hero-chart-stats {
+      display: flex;
+      gap: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 16px;
+    }
+    .stat-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      font-family: 'Geist Mono', monospace;
+      margin-top: 4px;
+      color: rgba(241, 245, 249, 0.85);
+    }
+    .stat-value.highlight {
+      color: var(--accent-primary);
+      text-shadow: 0 0 10px var(--accent-glow-subtle);
+    }
+    .hero-chart-canvas-container {
+      position: relative;
+      height: 220px;
+      width: 100%;
+    }
   </style>
 </head>
 
 <body>
   <div id="scroll-progress"></div>
+
+  <!-- Dark vignette overlay for background image readability -->
+  <div class="bg-darken-overlay"></div>
 
   <!-- Aurora Gradient Background -->
   <div class="aurora-bg">
@@ -1099,6 +1401,7 @@ input[type="text"]:focus, input[type="number"]:focus {
     <div class="aurora-blob"></div>
     <div class="aurora-blob"></div>
     <div class="aurora-blob"></div>
+    <div class="grid-overlay"></div>
   </div>
 
   <nav id='sidebar'>
@@ -1113,64 +1416,97 @@ input[type="text"]:focus, input[type="number"]:focus {
     <div class='nav-item' onclick='scrollToSection("usecases",this)'><span class='nav-icon'>💼</span><span class='nav-label'>Uses</span></div>
     <div class='nav-item' onclick='scrollToSection("faq",this)'><span class='nav-icon'>❓</span><span class='nav-label'>FAQ</span></div>
     <div class='nav-item' onclick='scrollToSection("technology",this)'><span class='nav-icon'>🤖</span><span class='nav-label'>Tech</span></div>
+    <div class='nav-item' onclick='scrollToSection("dev-specs",this)'><span class='nav-icon'>⚙️</span><span class='nav-label'>Specs</span></div>
   </nav>
+
 
   <!-- HOME -->
   <section id='home' class='section'>
-    <div style='max-width:900px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;'>
-      <div class='fu' style='background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);border-radius:999px;padding:6px 18px;font-size:12px;color:var(--accent-hover);margin-bottom:32px;letter-spacing:0.05em;'>⚡ AI-Powered Finance Management</div>
-      <!-- Staggered word-by-word masked reveal header -->
-      <h1 class='hero-title fu d1' style='font-size:clamp(48px,7vw,88px);font-weight:700;letter-spacing:-0.03em;line-height:0.95;margin-bottom:24px;'>
-        <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 1;'>Take</span></span>
-        <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 2;'>Control</span></span>
-        <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 3;'>of</span></span><br>
-        <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 4; color:#00e5ff;'>Your</span></span>
-        <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 5; color:#00e5ff;'>Finances</span></span><br>
-        <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 6;'>with</span></span>
-        <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 7;'>AI</span></span>
-      </h1>
-      <p class='fu d2' style='max-width:480px;color:rgba(241,245,249,0.6);font-size:17px;line-height:1.6;margin-bottom:40px;'>NexFi uses advanced AI to track your spending, analyze patterns, and give you personalized financial insights — all in natural language.</p>
-      <div class='fu d3' style='display:flex;gap:16px;margin-bottom:56px;flex-wrap:wrap;justify-content:center;'>
-        <button class='btn-primary' onclick='scrollToSection("chat",document.querySelectorAll(".nav-item")[3])'>Launch NexFi →</button>
-        <button class='btn-secondary' onclick='scrollToSection("features",document.querySelectorAll(".nav-item")[1])'>See How It Works</button>
-      </div>
-      <div style='display:flex;gap:16px;flex-wrap:wrap;justify-content:center;'>
-        <!-- Card 1: Emergency Fund Goal Capsule -->
-        <div class='glass fu d3' style='padding:20px 24px;text-align:left;min-width:220px;display:flex;justify-content:space-between;align-items:center;'>
-          <div>
-            <div style='font-size:24px;'>🎯</div>
-            <div style='font-size:13px;font-weight:700;margin-top:8px;'>Emergency Fund</div>
-            <div style='font-size:11px;color:rgba(241,245,249,0.5);margin-top:4px;'>Goal: ₹10,000</div>
+    <div class="hero-container">
+      <div class="hero-content-split">
+        <div class="hero-left fu">
+          <div class='hero-badge'>⚡ AI-Powered Finance Management</div>
+          <h1 class='hero-title fu d1'>
+            <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 1;'>Take</span></span>
+            <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 2;'>Control</span></span>
+            <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 3;'>of</span></span><br>
+            <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 4; color:#00e5ff;'>Your</span></span>
+            <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 5; color:#00e5ff;'>Finances</span></span><br>
+            <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 6;'>with</span></span>
+            <span class='word-reveal-wrap'><span class='word-reveal' style='--d: 7;'>AI</span></span>
+          </h1>
+          <p class='hero-subtitle fu d2'>NexFi uses advanced AI to track your spending, analyze patterns, and give you personalized financial insights — all in natural language.</p>
+          <div class='hero-buttons fu d3'>
+            <button class='btn-primary' onclick='scrollToSection("chat",document.querySelectorAll(".nav-item")[3])'>Launch NexFi →</button>
+            <button class='btn-secondary' onclick='scrollToSection("features",document.querySelectorAll(".nav-item")[1])'>See How It Works</button>
           </div>
-          <div class="goal-capsule">
-            <div class="goal-liquid" style="height: 75%;"></div>
-            <span class="goal-percentage">75%</span>
+          <div class='hero-capsules'>
+            <!-- Card 1: Emergency Fund Goal Capsule -->
+            <div class='glass fu d3' style='padding:16px 20px;text-align:left;min-width:200px;display:flex;justify-content:space-between;align-items:center;flex:1;'>
+              <div>
+                <div style='font-size:20px;'>🎯</div>
+                <div style='font-size:13px;font-weight:700;margin-top:6px;'>Emergency Fund</div>
+                <div style='font-size:11px;color:rgba(241,245,249,0.5);margin-top:2px;'>Goal: ₹10,000</div>
+              </div>
+              <div class="goal-capsule">
+                <div class="goal-liquid" style="height: 75%;"></div>
+                <span class="goal-percentage">75%</span>
+              </div>
+            </div>
+            
+            <!-- Card 2: Investment Fund Goal Capsule -->
+            <div class='glass fu d4' style='padding:16px 20px;text-align:left;min-width:200px;display:flex;justify-content:space-between;align-items:center;flex:1;'>
+              <div>
+                <div style='font-size:20px;'>📈</div>
+                <div style='font-size:13px;font-weight:700;margin-top:6px;'>Investment Goal</div>
+                <div style='font-size:11px;color:rgba(241,245,249,0.5);margin-top:2px;'>Goal: ₹25,000</div>
+              </div>
+              <div class="goal-capsule">
+                <div class="goal-liquid" style="height: 40%;"></div>
+                <span class="goal-percentage">40%</span>
+              </div>
+            </div>
+            
+            <!-- Card 3: Shopping Budget Goal Capsule -->
+            <div class='glass fu d5' style='padding:16px 20px;text-align:left;min-width:200px;display:flex;justify-content:space-between;align-items:center;flex:1;'>
+              <div>
+                <div style='font-size:20px;'>🛍️</div>
+                <div style='font-size:13px;font-weight:700;margin-top:6px;'>Shopping limit</div>
+                <div style='font-size:11px;color:rgba(241,245,249,0.5);margin-top:2px;'>Goal: ₹5,000</div>
+              </div>
+              <div class="goal-capsule">
+                <div class="goal-liquid" style="height: 90%;"></div>
+                <span class="goal-percentage">90%</span>
+              </div>
+            </div>
           </div>
         </div>
         
-        <!-- Card 2: Investment Fund Goal Capsule -->
-        <div class='glass fu d4' style='padding:20px 24px;text-align:left;min-width:220px;display:flex;justify-content:space-between;align-items:center;'>
-          <div>
-            <div style='font-size:24px;'>📈</div>
-            <div style='font-size:13px;font-weight:700;margin-top:8px;'>Investment Goal</div>
-            <div style='font-size:11px;color:rgba(241,245,249,0.5);margin-top:4px;'>Goal: ₹25,000</div>
-          </div>
-          <div class="goal-capsule">
-            <div class="goal-liquid" style="height: 40%;"></div>
-            <span class="goal-percentage">40%</span>
-          </div>
-        </div>
-        
-        <!-- Card 3: Shopping Budget Goal Capsule -->
-        <div class='glass fu d5' style='padding:20px 24px;text-align:left;min-width:220px;display:flex;justify-content:space-between;align-items:center;'>
-          <div>
-            <div style='font-size:24px;'>🛍️</div>
-            <div style='font-size:13px;font-weight:700;margin-top:8px;'>Shopping limit</div>
-            <div style='font-size:11px;color:rgba(241,245,249,0.5);margin-top:4px;'>Goal: ₹5,000</div>
-          </div>
-          <div class="goal-capsule">
-            <div class="goal-liquid" style="height: 90%;"></div>
-            <span class="goal-percentage">90%</span>
+        <div class="hero-right fu d2">
+          <!-- Glass card with portfolio projection chart -->
+          <div class="glass hero-chart-card">
+            <div class="hero-chart-header">
+              <div>
+                <div class="hero-chart-title">AI Portfolio Insights</div>
+                <div class="hero-chart-subtitle">Projected Optimized Growth vs Traditional</div>
+              </div>
+              <div class="hero-chart-badge">+240.5% Est.</div>
+            </div>
+            
+            <div class="hero-chart-stats">
+              <div class="stat-group">
+                <div class="stat-label">Traditional</div>
+                <div class="stat-value">₹22,000</div>
+              </div>
+              <div class="stat-group">
+                <div class="stat-label">AI-Optimized</div>
+                <div class="stat-value highlight">₹52,000</div>
+              </div>
+            </div>
+            
+            <div class="hero-chart-canvas-container">
+              <canvas id="hero-chart"></canvas>
+            </div>
           </div>
         </div>
       </div>
@@ -1352,18 +1688,33 @@ input[type="text"]:focus, input[type="number"]:focus {
           <p style='color:rgba(241,245,249,0.5);font-size:14px;margin-top:8px;'>Tell me about your expenses or ask anything about your finances</p>
         </div>
         <!-- Budget bar with Apple-Style Ring -->
-        <div class='glass' style='padding:14px 18px;margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;'>
-          <svg width="32" height="32" viewBox="0 0 36 36" style="transform: rotate(-90deg); margin-right: 2px; flex-shrink: 0;">
-            <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3" />
-            <!-- Simulated Ring Fill (semi-transparent/dashed style overlay) -->
-            <circle id="budgetRingSimFill" cx="18" cy="18" r="14" fill="none" stroke="rgba(0, 229, 255, 0.4)" stroke-dasharray="88" stroke-dashoffset="88" stroke-width="3" stroke-linecap="round" style="transition: stroke-dashoffset 0.6s ease, stroke 0.6s;" />
-            <circle id="budgetRingFill" cx="18" cy="18" r="14" fill="none" stroke="var(--accent-primary)" stroke-dasharray="88" stroke-dashoffset="88" stroke-width="3" stroke-linecap="round" style="transition: stroke-dashoffset 0.6s ease, stroke 0.6s;" />
-          </svg>
-          <span style='font-size:13px;color:rgba(241,245,249,0.6);'>Monthly Goal (₹):</span>
-          <input id='goalInput' type='number' value='5000' style='background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:6px 12px;color:#F1F5F9;font-size:13px;width:100px;font-family:Inter,sans-serif;'>
-          <div id='budgetInfo' style='font-size:13px;color:#A5B4FC;'></div>
-          <button onclick='downloadCSV()' class='btn-csv'>⬇ Download CSV</button>
+        <div class='glass' style='padding: 16px 20px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;'>
+          <div style='display: flex; align-items: center; gap: 14px;'>
+            <div style="position: relative; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); border-radius: 50%; box-shadow: inset 0 0 8px rgba(0,0,0,0.6), 0 0 10px rgba(0, 229, 255, 0.05); border: 1px solid rgba(255,255,255,0.06); flex-shrink: 0;">
+              <svg width="48" height="48" viewBox="0 0 36 36" style="transform: rotate(-90deg); flex-shrink: 0; position: absolute; top: 0; left: 0;">
+                <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="2.5" />
+                <!-- Simulated Ring Fill (semi-transparent/dashed style overlay) -->
+                <circle id="budgetRingSimFill" cx="18" cy="18" r="14" fill="none" stroke="rgba(0, 229, 255, 0.2)" stroke-dasharray="88" stroke-dashoffset="88" stroke-width="3" stroke-linecap="round" style="transition: stroke-dashoffset 0.6s ease, stroke 0.6s;" />
+                <!-- Main Ring Fill with Glow Filter -->
+                <circle id="budgetRingFill" cx="18" cy="18" r="14" fill="none" stroke="var(--accent-primary)" stroke-dasharray="88" stroke-dashoffset="88" stroke-width="3" stroke-linecap="round" style="transition: stroke-dashoffset 0.6s ease, stroke 0.6s; filter: drop-shadow(0 0 3px var(--accent-primary));" />
+              </svg>
+              <!-- Center percentage display -->
+              <span id="budgetPercentText" style="font-family: 'Geist Mono', monospace; font-size: 11px; font-weight: 700; color: #fff; text-shadow: 0 0 6px rgba(0,229,255,0.4); z-index: 2;">0%</span>
+            </div>
+            <div>
+              <div style='font-size:10px; text-transform:uppercase; letter-spacing:0.06em; color:rgba(241,245,249,0.4); font-weight:700; margin-bottom:4px;'>Monthly Budget Goal</div>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <div style="position: relative; display: inline-flex; align-items: center;">
+                  <span style="position: absolute; left: 10px; font-size: 13px; color: var(--accent-primary); font-family: 'Geist Mono', monospace; pointer-events: none; font-weight: 600;">₹</span>
+                  <input id='goalInput' type='number' value='5000' class="uiverse-goal-input">
+                </div>
+                <div id='budgetInfo' style='font-size:12px; color:#A5B4FC; font-family: "Geist Mono", monospace; font-weight: 500; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px;'></div>
+              </div>
+            </div>
+          </div>
+          <button onclick='downloadCSV()' class='btn-csv' style='margin-left: 0;'>⬇ Download CSV</button>
         </div>
+
         <!-- History viewing banner -->
         <div id='historyBanner' style='display:none;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);border-radius:12px;padding:10px 16px;margin-bottom:12px;font-size:12px;color:#A5B4FC;justify-content:space-between;align-items:center;'>
           <span id='historyBannerText'></span>
@@ -1507,7 +1858,7 @@ input[type="text"]:focus, input[type="number"]:focus {
         <div style="width: 100%; overflow-x: auto; padding: 24px 0 8px 0;">
           <div style="display: flex; gap: 8px; min-width: max-content; padding-top: 4px;">
             <!-- Y-Axis Labels -->
-            <div style="display: flex; flex-direction: column; justify-content: space-between; font-size: 9px; color: var(--text-muted); padding: 2px 4px 2px 0; height: 101px; text-align: right; width: 24px; pointer-events: none; user-select: none;">
+            <div style="display: flex; flex-direction: column; justify-content: space-between; font-size: 10px; color: #94a3b8; font-family: 'Geist Mono', monospace; font-weight: 600; padding: 2px 4px 2px 0; height: 101px; text-align: right; width: 24px; pointer-events: none; user-select: none;">
               <span>Sun</span>
               <span>Mon</span>
               <span>Tue</span>
@@ -1587,12 +1938,240 @@ input[type="text"]:focus, input[type="number"]:focus {
         <div class='glass feature-card fu d3' style='padding:28px;'><div style='font-size:40px;margin-bottom:16px;'>📊</div><h3 style='font-size:14px;font-weight:600;margin-bottom:8px;'>Chart.js</h3><p style='font-size:12px;color:rgba(241,245,249,0.5);'>Interactive visualizations</p></div>
         <div class='glass feature-card fu d4' style='padding:28px;'><div style='font-size:40px;margin-bottom:16px;'>⚡</div><h3 style='font-size:14px;font-weight:600;margin-bottom:8px;'>Flask API</h3><p style='font-size:12px;color:rgba(241,245,249,0.5);'>Fast Python backend</p></div>
       </div>
+
+      <!-- Developer CLI Console Guide Block -->
+      <div class='glass fu d5' style='margin-top:40px; padding:32px; text-align:left;'>
+        <div style='display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:20px; border-bottom:2px solid var(--glass-border); padding-bottom:16px;'>
+          <h3 style='font-size:18px; font-weight:700; color:#fff; display:flex; align-items:center; gap:8px;'>
+            <span style='color:var(--accent-primary); font-family: "Geist Mono", monospace;'>&gt;_</span> Developer CLI Console Guide
+          </h3>
+          <button class='btn-primary' onclick='toggleCLI()' style='padding:8px 20px; font-size:13px; font-family: "Geist Mono", monospace; letter-spacing:0.02em;'>
+            toggle_cli --run
+          </button>
+        </div>
+        <p style='font-size:14px; color:rgba(241,245,249,0.6); line-height:1.6; margin-bottom:24px;'>
+          NexFi features a built-in terminal for power users and developers. Execute instant actions, manage budget parameters, and inspect application status without touching a mouse. Use the toggle button above to open or close the drawer console.
+        </p>
+        <div style='display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px;'>
+          <div class='glass' style='padding:16px; background:rgba(6, 8, 13, 0.45); border-radius:10px; border:2px solid var(--glass-border); transition:all 0.3s ease;'>
+            <div style='font-family:"Geist Mono", monospace; font-size:13px; color:var(--accent-primary); font-weight:600; margin-bottom:6px;'>/add [amount] [category] [description]</div>
+            <div style='font-size:12px; color:rgba(241,245,249,0.5); line-height:1.4;'>Logs a new expense transaction. e.g., <code style='color:#a5b4fc; font-family:"Geist Mono", monospace;'>/add 250 Food lunch</code></div>
+          </div>
+          <div class='glass' style='padding:16px; background:rgba(6, 8, 13, 0.45); border-radius:10px; border:2px solid var(--glass-border); transition:all 0.3s ease;'>
+            <div style='font-family:"Geist Mono", monospace; font-size:13px; color:var(--accent-primary); font-weight:600; margin-bottom:6px;'>/goal [amount]</div>
+            <div style='font-size:12px; color:rgba(241,245,249,0.5); line-height:1.4;'>Updates the target monthly budget goal. e.g., <code style='color:#a5b4fc; font-family:"Geist Mono", monospace;'>/goal 8000</code></div>
+          </div>
+          <div class='glass' style='padding:16px; background:rgba(6, 8, 13, 0.45); border-radius:10px; border:2px solid var(--glass-border); transition:all 0.3s ease;'>
+            <div style='font-family:"Geist Mono", monospace; font-size:13px; color:var(--accent-primary); font-weight:600; margin-bottom:6px;'>/help</div>
+            <div style='font-size:12px; color:rgba(241,245,249,0.5); line-height:1.4;'>Prints a list of all supported interactive terminal commands.</div>
+          </div>
+          <div class='glass' style='padding:16px; background:rgba(6, 8, 13, 0.45); border-radius:10px; border:2px solid var(--glass-border); transition:all 0.3s ease;'>
+            <div style='font-family:"Geist Mono", monospace; font-size:13px; color:var(--accent-primary); font-weight:600; margin-bottom:6px;'>/clear &amp; /exit</div>
+            <div style='font-size:12px; color:rgba(241,245,249,0.5); line-height:1.4;'>Use <code style='color:#a5b4fc; font-family:"Geist Mono", monospace;'>/clear</code> to flush console output or <code style='color:#a5b4fc; font-family:"Geist Mono", monospace;'>/exit</code> to close.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEVELOPER SPECIFICATIONS -->
+  <section id='dev-specs' class='section'>
+    <div style='max-width:1000px;margin:0 auto;text-align:center;'>
+      <div class='fu' style='background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.25);border-radius:999px;padding:5px 16px;font-size:11px;color:#00e5ff;display:inline-block;margin-bottom:20px;letter-spacing:0.08em;text-transform:uppercase;'>Engine Details</div>
+      <h2 class='fu d1' style='font-size:clamp(36px,5vw,60px);font-weight:700;letter-spacing:-0.02em;margin-bottom:16px;color:#F1F5F9;'>System <span style='color:#00e5ff;'>Specifications</span></h2>
+      <p class='fu d2' style='color:rgba(241,245,249,0.5);font-size:16px;margin-bottom:56px;max-width:600px;margin-left:auto;margin-right:auto;'>Deep dive into NexFi's technical internals, telemetry, and future development path.</p>
+
+      <div style='display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:32px;text-align:left;'>
+        <!-- ARCHITECTURE SYSTEM DESIGN -->
+        <div class='glass fu d3' style='padding:32px;'>
+          <h3 style='font-size:18px;font-weight:700;color:#fff;margin-bottom:20px;display:flex;align-items:center;gap:8px;'>
+            <span style='color:#00e5ff;'>📊</span> System Architecture
+          </h3>
+          <div style='background:rgba(6,8,13,0.45);border:2px solid var(--glass-border);border-radius:12px;padding:24px;position:relative;overflow:hidden;'>
+            <div style='display:flex;flex-direction:column;gap:16px;position:relative;'>
+              <!-- Node 1 -->
+              <div style='display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 16px;'>
+                <div style='display:flex;align-items:center;gap:10px;'>
+                  <span style='font-size:20px;'>🌐</span>
+                  <div>
+                    <div style='font-size:13px;font-weight:600;color:#fff;'>User Interface</div>
+                    <div style='font-size:10px;color:rgba(241,245,249,0.4);'>HTML5 / CSS / Vanilla JS</div>
+                  </div>
+                </div>
+                <div style='font-family:"Geist Mono", monospace;font-size:10px;color:#00e5ff;background:rgba(0,229,255,0.1);padding:2px 8px;border-radius:4px;'>Client</div>
+              </div>
+              
+              <!-- Arrow/Line -->
+              <div style='display:flex;justify-content:center;margin:-8px 0;'><div style='width:2px;height:20px;background:linear-gradient(180deg,#00e5ff,rgba(0,229,255,0.2));box-shadow:0 0 8px rgba(0,229,255,0.5);'></div></div>
+              
+              <!-- Node 2 -->
+              <div style='display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 16px;'>
+                <div style='display:flex;align-items:center;gap:10px;'>
+                  <span style='font-size:20px;'>⚡</span>
+                  <div>
+                    <div style='font-size:13px;font-weight:600;color:#fff;'>Flask Backend API</div>
+                    <div style='font-size:10px;color:rgba(241,245,249,0.4);'>WSGI Gateway / Controller</div>
+                  </div>
+                </div>
+                <div style='font-family:"Geist Mono", monospace;font-size:10px;color:#a5b4fc;background:rgba(165,180,252,0.1);padding:2px 8px;border-radius:4px;'>Server</div>
+              </div>
+              
+              <!-- Split lines -->
+              <div style='display:flex;justify-content:space-between;padding:0 25%;margin:-8px 0;'>
+                <div style='width:2px;height:20px;background:linear-gradient(180deg,#a5b4fc,rgba(165,180,252,0.2));'></div>
+                <div style='width:2px;height:20px;background:linear-gradient(180deg,#a5b4fc,rgba(165,180,252,0.2));'></div>
+              </div>
+
+              <!-- Twin Nodes -->
+              <div style='display:flex;gap:16px;'>
+                <!-- Node 3a -->
+                <div style='flex:1;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px;text-align:center;'>
+                  <span style='font-size:20px;display:block;margin-bottom:6px;'>🧠</span>
+                  <div style='font-size:12px;font-weight:600;color:#fff;'>Gemini AI</div>
+                  <div style='font-size:9px;color:rgba(241,245,249,0.4);margin-top:2px;'>Natural Language Processing</div>
+                </div>
+                <!-- Node 3b -->
+                <div style='flex:1;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px;text-align:center;'>
+                  <span style='font-size:20px;display:block;margin-bottom:6px;'>🗄️</span>
+                  <div style='font-size:12px;font-weight:600;color:#fff;'>SQLite Store</div>
+                  <div style='font-size:9px;color:rgba(241,245,249,0.4);margin-top:2px;'>Local Expense Database</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- API REFERENCE -->
+        <div class='glass fu d4' style='padding:32px;display:flex;flex-direction:column;'>
+          <h3 style='font-size:18px;font-weight:700;color:#fff;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;'>
+            <span style='display:flex;align-items:center;gap:8px;'><span>🔌</span> API Endpoints</span>
+            <span style='font-size:11px;color:rgba(241,245,249,0.4);font-family:"Geist Mono", monospace;'>v1.0.0</span>
+          </h3>
+          <!-- Tabs -->
+          <div style='display:flex;gap:6px;margin-bottom:16px;border-bottom:2px solid var(--glass-border);padding-bottom:10px;'>
+            <button class='api-tab-btn active-tab' onclick='switchApiTab("api-chat", this)'>POST /chat</button>
+            <button class='api-tab-btn' onclick='switchApiTab("api-expenses", this)'>GET /expenses</button>
+            <button class='api-tab-btn' onclick='switchApiTab("api-budget", this)'>POST /budget</button>
+          </div>
+          <!-- Tab Contents -->
+          <div style='flex:1;background:rgba(6,8,13,0.6);border:2px solid var(--glass-border);border-radius:8px;padding:16px;font-family:"Geist Mono", monospace;font-size:12px;line-height:1.5;overflow-y:auto;max-height:220px;'>
+            <!-- POST /chat -->
+            <div id='api-chat' class='api-tab-content'>
+              <div style='color:#a5b4fc;margin-bottom:8px;'>// Request Body</div>
+              <div style='color:rgba(241,245,249,0.8);'>{
+  "message": "I spent 350 for movie tickets"
+}</div>
+              <div style='color:#6ee7b7;margin-top:12px;margin-bottom:8px;'>// Response Payload</div>
+              <div style='color:rgba(241,245,249,0.8);'>{
+  "status": "success",
+  "reply": "Added ₹350 under 'Entertainment' for 'movie tickets'."
+}</div>
+            </div>
+            <!-- GET /expenses -->
+            <div id='api-expenses' class='api-tab-content' style='display:none;'>
+              <div style='color:#a5b4fc;margin-bottom:8px;'>// Headers: Content-Type: application/json</div>
+              <div style='color:#6ee7b7;margin-bottom:8px;'>// Response Payload</div>
+              <div style='color:rgba(241,245,249,0.8);'>[
+  {
+    "id": 12,
+    "amount": 350.0,
+    "category": "Entertainment",
+    "description": "movie tickets",
+    "date": "2026-05-24"
+  }
+]</div>
+            </div>
+            <!-- POST /budget -->
+            <div id='api-budget' class='api-tab-content' style='display:none;'>
+              <div style='color:#a5b4fc;margin-bottom:8px;'>// Set target monthly budget</div>
+              <div style='color:rgba(241,245,249,0.8);'>{
+  "limit": 15000
+}</div>
+              <div style='color:#6ee7b7;margin-top:12px;margin-bottom:8px;'>// Response Payload</div>
+              <div style='color:rgba(241,245,249,0.8);'>{
+  "status": "success",
+  "limit": 15000
+}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style='display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:32px;text-align:left;'>
+        <!-- SECURITY & PRIVACY -->
+        <div class='glass fu d5' style='padding:28px;'>
+          <h3 style='font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:8px;'>
+            <span style='color:#10B981;'>🛡️</span> Security &amp; Privacy
+          </h3>
+          <ul style='font-size:12px;color:rgba(241,245,249,0.5);line-height:1.7;padding-left:18px;margin:0;'>
+            <li style='margin-bottom:8px;'><strong style='color:#fff;'>Localized Database:</strong> All expenses are recorded on your machine in a secure local SQLite DB instance.</li>
+            <li style='margin-bottom:8px;'><strong style='color:#fff;'>TLS Encryption:</strong> Interactions with the Google Gemini API are fully encrypted in transit.</li>
+            <li><strong style='color:#fff;'>No Third-Party Analytics:</strong> Zero external tracking scripts, cookies, or data brokers involved.</li>
+          </ul>
+        </div>
+
+        <!-- PERFORMANCE TELEMETRY -->
+        <div class='glass fu d5' style='padding:28px;'>
+          <h3 style='font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:8px;'>
+            <span style='color:#EAB308;'>⚡</span> Telemetry &amp; Metrics
+          </h3>
+          <div style='display:grid;grid-template-columns:repeat(2,1fr);gap:12px;'>
+            <div style='background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:6px;padding:10px;'>
+              <div style='font-size:10px;color:rgba(241,245,249,0.4);text-transform:uppercase;'>API Latency</div>
+              <div style='font-size:18px;font-weight:700;color:#00e5ff;margin-top:2px;'>&lt; 120ms</div>
+            </div>
+            <div style='background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:6px;padding:10px;'>
+              <div style='font-size:10px;color:rgba(241,245,249,0.4);text-transform:uppercase;'>DB Search</div>
+              <div style='font-size:18px;font-weight:700;color:#a5b4fc;margin-top:2px;'>1.8ms</div>
+            </div>
+            <div style='background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:6px;padding:10px;'>
+              <div style='font-size:10px;color:rgba(241,245,249,0.4);text-transform:uppercase;'>Flask Overhead</div>
+              <div style='font-size:18px;font-weight:700;color:#6ee7b7;margin-top:2px;'>32.4MB</div>
+            </div>
+            <div style='background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:6px;padding:10px;'>
+              <div style='font-size:10px;color:rgba(241,245,249,0.4);text-transform:uppercase;'>Uptime</div>
+              <div style='font-size:18px;font-weight:700;color:#f472b6;margin-top:2px;'>99.99%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- INTEGRATION ROADMAP -->
+        <div class='glass fu d6' style='padding:28px;'>
+          <h3 style='font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:8px;'>
+            <span style='color:#A78BFA;'>📅</span> Development Roadmap
+          </h3>
+          <div style='display:flex;flex-direction:column;gap:10px;font-size:11px;'>
+            <div style='display:flex;gap:10px;align-items:flex-start;'>
+              <div style='width:6px;height:6px;border-radius:50%;background:#10B981;box-shadow:0 0 6px #10B981;margin-top:4px;'></div>
+              <div>
+                <div style='font-weight:600;color:#fff;'>Phase 1: Deep Categorization (Current)</div>
+                <div style='color:rgba(241,245,249,0.4);'>Automatic NLP expense parsing.</div>
+              </div>
+            </div>
+            <div style='display:flex;gap:10px;align-items:flex-start;'>
+              <div style='width:6px;height:6px;border-radius:50%;background:#3B82F6;box-shadow:0 0 6px #3B82F6;margin-top:4px;'></div>
+              <div>
+                <div style='font-weight:600;color:#fff;'>Phase 2: Bank Sync Gateway</div>
+                <div style='color:rgba(241,245,249,0.4);'>Read-only automated Plaid/Yodlee parsing.</div>
+              </div>
+            </div>
+            <div style='display:flex;gap:10px;align-items:flex-start;'>
+              <div style='width:6px;height:6px;border-radius:50%;background:#6B7280;margin-top:4px;'></div>
+              <div>
+                <div style='font-weight:600;color:rgba(241,245,249,0.6);'>Phase 3: Messaging Integration</div>
+                <div style='color:rgba(241,245,249,0.4);'>Log via WhatsApp and Telegram bots.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <script>
     // Nav order matches HTML section order
-    const sections = ['home','features','how-it-works','chat','analytics','testimonials','usecases','faq','technology'];
+    const sections = ['home','features','how-it-works','chat','analytics','testimonials','usecases','faq','technology','dev-specs'];
+
     const navItems = document.querySelectorAll('.nav-item');
 
     function updateNavPill() {
@@ -1889,7 +2468,22 @@ input[type="text"]:focus, input[type="number"]:focus {
           }
         }
       }
+      const percentText = document.getElementById('budgetPercentText');
+      if (percentText) {
+        percentText.textContent = pct + '%';
+        if (pct >= 100) {
+          percentText.style.color = '#ef4444';
+          percentText.style.textShadow = '0 0 8px rgba(239, 68, 68, 0.4)';
+        } else if (pct >= 85) {
+          percentText.style.color = '#ffb300';
+          percentText.style.textShadow = '0 0 8px rgba(255, 179, 0, 0.4)';
+        } else {
+          percentText.style.color = '#fff';
+          percentText.style.textShadow = '0 0 8px rgba(0, 229, 255, 0.4)';
+        }
+      }
     }
+
 
     function drawBudgetRingWithSimulation(total, simAmount, goal) {
       drawBudgetRing(total, goal);
@@ -1979,6 +2573,7 @@ input[type="text"]:focus, input[type="number"]:focus {
       updateBudget(goal);
       loadHistory();
       setTimeout(updateNavPill, 100);
+      window.addEventListener('resize', updateNavPill);
 
       // Hook up simulator listeners
       const simAmtInput = document.getElementById('simAmountInput');
@@ -2013,7 +2608,133 @@ input[type="text"]:focus, input[type="number"]:focus {
           updateBudget(g);
         });
       }
+      
+      // Initialize the professional hero chart
+      drawHeroChart();
     });
+
+    function drawHeroChart() {
+      const canvasEl = document.getElementById('hero-chart');
+      if (!canvasEl) return;
+      const ctx = canvasEl.getContext('2d');
+      
+      const gradNexfi = ctx.createLinearGradient(0, 0, 0, 200);
+      gradNexfi.addColorStop(0, 'rgba(0, 229, 255, 0.4)');
+      gradNexfi.addColorStop(0.5, 'rgba(0, 229, 255, 0.15)');
+      gradNexfi.addColorStop(1, 'rgba(0, 229, 255, 0)');
+
+      const gradTrad = ctx.createLinearGradient(0, 0, 0, 200);
+      gradTrad.addColorStop(0, 'rgba(124, 58, 237, 0.15)');
+      gradTrad.addColorStop(1, 'rgba(124, 58, 237, 0)');
+
+      const data = {
+        labels: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6', 'Month 7'],
+        datasets: [
+          {
+            label: 'AI Optimized (NexFi)',
+            data: [10000, 13500, 19000, 26000, 34000, 43000, 52000],
+            borderColor: '#00e5ff',
+            borderWidth: 3,
+            pointBackgroundColor: '#00e5ff',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            pointHoverRadius: 7,
+            pointRadius: 4,
+            tension: 0.4,
+            fill: true,
+            backgroundColor: gradNexfi,
+          },
+          {
+            label: 'Traditional Savings',
+            data: [10000, 12000, 14000, 16000, 18000, 20000, 22000],
+            borderColor: '#7c3aed',
+            borderWidth: 2,
+            pointBackgroundColor: '#7c3aed',
+            pointBorderColor: 'rgba(255, 255, 255, 0.5)',
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointRadius: 3,
+            borderDash: [5, 5],
+            tension: 0.1,
+            fill: true,
+            backgroundColor: gradTrad,
+          }
+        ]
+      };
+
+      new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                color: 'rgba(241, 245, 249, 0.7)',
+                font: {
+                  family: "'Inter', sans-serif",
+                  size: 11,
+                  weight: '500'
+                },
+                boxWidth: 12,
+                boxHeight: 6,
+                useBorderRadius: true,
+                borderRadius: 3
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(10, 15, 30, 0.95)',
+              titleColor: '#fff',
+              bodyColor: 'rgba(241, 245, 249, 0.8)',
+              borderColor: 'rgba(255, 255, 255, 0.08)',
+              borderWidth: 1,
+              padding: 12,
+              cornerRadius: 10,
+              displayColors: true,
+              callbacks: {
+                label: function(context) {
+                  return ` ${context.dataset.label}: ₹${context.raw.toLocaleString()}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                display: true,
+                color: 'rgba(255, 255, 255, 0.02)',
+                lineWidth: 1
+              },
+              ticks: {
+                color: 'rgba(241, 245, 249, 0.5)',
+                font: {
+                  size: 10
+                }
+              }
+            },
+            y: {
+              grid: {
+                display: true,
+                color: 'rgba(255, 255, 255, 0.02)',
+                lineWidth: 1
+              },
+              ticks: {
+                color: 'rgba(241, 245, 249, 0.5)',
+                font: {
+                  size: 10
+                },
+                callback: function(value) {
+                  return '₹' + (value / 1000) + 'k';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
 
     let chartsLoaded = false;
     async function loadCharts() {
@@ -2232,6 +2953,13 @@ input[type="text"]:focus, input[type="number"]:focus {
 
     stepCards.forEach(card => stepObserver.observe(card));
 
+    function switchApiTab(tabId, btnEl) {
+      document.querySelectorAll('#dev-specs .api-tab-content').forEach(c => c.style.display = 'none');
+      const target = document.getElementById(tabId);
+      if (target) target.style.display = 'block';
+      document.querySelectorAll('#dev-specs .api-tab-btn').forEach(b => b.classList.remove('active-tab'));
+      if (btnEl) btnEl.classList.add('active-tab');
+    }
 
     // Holographic Card Sheen pointer tracking
     document.querySelectorAll('.glass').forEach(card => {
