@@ -4,8 +4,10 @@ load_dotenv()
 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-from database import init_db, save_expense, get_expenses, get_monthly_expenses
+from database import init_db, save_expense, get_expenses, save_chat_message, get_chat_dates, get_chat_by_date
 from agent import parse_expense, generate_insight
+from datetime import datetime
+import time
 
 app = Flask(__name__, static_folder='.')
 CORS(app)
@@ -22,30 +24,97 @@ def chat():
     user_message = data.get('message', '')
     goal = data.get('goal', 5000)
     conversation_history = data.get('conversation_history', [])
-    
+
+    now = datetime.now()
+    today = now.strftime('%Y-%m-%d')
+
+    # Save user message to history
+    save_chat_message(today, 'user', user_message)
+
+    # Parse expense FIRST — before any DB write
     expense = parse_expense(user_message)
-    
-    if expense:
-        save_expense(expense['amount'], expense['category'], expense['description'])
-        expenses = get_monthly_expenses()
-        insight = generate_insight(expenses, goal, user_message, conversation_history)
+
+    if expense and expense.get('is_expense') and expense.get('amount'):
+        # Generate insight BEFORE saving expense
+        # This prevents double-save if insight fails
+        expenses_before = get_expenses(now.month, now.year)
+
+        # Retry insight up to 3 times
+        insight = None
+        for attempt in range(3):
+            try:
+                # Temporarily add this expense to the list for accurate insight
+                temp_expenses = expenses_before + [{
+                    'amount': expense['amount'],
+                    'category': expense['category'],
+                    'description': expense['description'],
+                    'date': now.strftime('%Y-%m-%d %H:%M:%S')
+                }]
+                insight = generate_insight(temp_expenses, goal, user_message, conversation_history)
+                if 'trouble connecting' not in insight:
+                    break
+                if attempt < 2:
+                    time.sleep(2)
+            except Exception as e:
+                print(f"Insight attempt {attempt+1} failed: {e}")
+                if attempt < 2:
+                    time.sleep(2)
+
+        # Now save the expense (only once, after insight succeeds or all retries done)
+        save_expense(
+            expense['amount'],
+            expense['category'],
+            expense['description'],
+            now.strftime('%Y-%m-%d %H:%M:%S')
+        )
+
+        # Get fresh total after saving
+        expenses_after = get_expenses(now.month, now.year)
+        total_spent = sum(e['amount'] for e in expenses_after)
+
+        if insight and 'trouble connecting' not in insight:
+            reply = f"✅ Recorded ₹{expense['amount']} under {expense['category']}. {insight}"
+        else:
+            remaining = goal - total_spent
+            pct = round((total_spent / goal * 100) if goal > 0 else 0, 1)
+            reply = f"✅ Recorded ₹{expense['amount']} under {expense['category']}. You've spent Rs {total_spent} this month ({pct}% of your Rs {goal} goal). Rs {remaining} remaining."
+
+        save_chat_message(today, 'ai', reply)
         return jsonify({
             'type': 'expense',
-            'message': f"✅ Recorded ₹{expense['amount']} under {expense['category']}. {insight}",
-            'expense': expense
+            'message': reply,
+            'expense': expense,
+            'total_spent': total_spent
         })
     else:
-        expenses = get_monthly_expenses()
-        insight = generate_insight(expenses, goal, user_message, conversation_history)
-        return jsonify({
-            'type': 'insight',
-            'message': insight
-        })
+        # Not an expense — generate insight with retry
+        expenses = get_expenses(now.month, now.year)
+        insight = None
+        for attempt in range(3):
+            insight = generate_insight(expenses, goal, user_message, conversation_history)
+            if 'trouble connecting' not in insight:
+                break
+            if attempt < 2:
+                time.sleep(2)
+
+        save_chat_message(today, 'ai', insight)
+        return jsonify({'type': 'insight', 'message': insight})
 
 @app.route('/expenses', methods=['GET'])
 def expenses():
-    data = get_monthly_expenses()
+    now = datetime.now()
+    data = get_expenses(now.month, now.year)
     return jsonify(data)
+
+@app.route('/chat-history', methods=['GET'])
+def chat_history():
+    dates = get_chat_dates()
+    return jsonify(dates)
+
+@app.route('/chat-history/<date>', methods=['GET'])
+def chat_history_by_date(date):
+    messages = get_chat_by_date(date)
+    return jsonify(messages)
 
 @app.route('/set-goal', methods=['POST'])
 def set_goal():
