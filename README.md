@@ -2,7 +2,6 @@
 
 <div align="center">
 
-<img src="bg-finance.png" alt="NexFi Banner" width="350"/>
 
 **A conversational AI finance tracker that understands plain English, logs your expenses, and gives real-time budget insights.**
 
