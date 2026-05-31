@@ -2169,6 +2169,11 @@ input[type="text"]:focus, input[type="number"]:focus {
   </section>
 
   <script>
+    if (!localStorage.getItem('user_id')) {
+      localStorage.setItem('user_id', crypto.randomUUID());
+    }
+    const userId = localStorage.getItem('user_id');
+
     // Nav order matches HTML section order
     const sections = ['home','features','how-it-works','chat','analytics','testimonials','usecases','faq','technology','dev-specs'];
 
@@ -2273,7 +2278,7 @@ input[type="text"]:focus, input[type="number"]:focus {
 
     async function loadHistory() {
       try {
-        const res = await fetch('/chat-history');
+        const res = await fetch('/chat-history', { headers: { 'X-User-ID': userId } });
         const dates = await res.json();
         const list = document.getElementById('historyList');
         list.innerHTML = '';
@@ -2324,7 +2329,7 @@ input[type="text"]:focus, input[type="number"]:focus {
 
     async function openHistoryDate(date, label) {
       try {
-        const res = await fetch(`/chat-history/${date}`);
+        const res = await fetch(`/chat-history/${date}`, { headers: { 'X-User-ID': userId } });
         const messages = await res.json();
         const container = document.getElementById('chatMessages');
         container.innerHTML = '';
@@ -2367,7 +2372,7 @@ input[type="text"]:focus, input[type="number"]:focus {
 
     async function downloadCSV() {
       try {
-        const res = await fetch('/expenses');
+        const res = await fetch('/expenses', { headers: { 'X-User-ID': userId } });
         const expenses = await res.json();
         if (!expenses.length) { alert('No expenses to download.'); return; }
         const header = 'Date,Amount,Category,Description';
@@ -2396,7 +2401,7 @@ input[type="text"]:focus, input[type="number"]:focus {
       try {
         const res = await fetch('/chat', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-User-ID': userId },
           body: JSON.stringify({ message: msg, goal, conversation_history: conversationHistory })
         });
         const data = await res.json();
@@ -2555,7 +2560,7 @@ input[type="text"]:focus, input[type="number"]:focus {
 
     async function updateBudget(goal) {
       try {
-        const res = await fetch('/expenses');
+        const res = await fetch('/expenses', { headers: { 'X-User-ID': userId } });
         const expenses = await res.json();
         const total = expenses.reduce((s, e) => s + e.amount, 0);
         currentActualSpend = total;
@@ -2568,8 +2573,18 @@ input[type="text"]:focus, input[type="number"]:focus {
       } catch (e) { }
     }
 
-    window.addEventListener('load', () => {
-      const goal = parseInt(document.getElementById('goalInput').value) || 5000;
+    window.addEventListener('load', async () => {
+      let goal = 5000;
+      try {
+        const res = await fetch('/get-goal', { headers: { 'X-User-ID': userId } });
+        const data = await res.json();
+        if (data && data.goal !== undefined) {
+          goal = data.goal;
+          const goalInput = document.getElementById('goalInput');
+          if (goalInput) goalInput.value = goal;
+        }
+      } catch (e) {}
+
       updateBudget(goal);
       loadHistory();
       setTimeout(updateNavPill, 100);
@@ -2603,9 +2618,16 @@ input[type="text"]:focus, input[type="number"]:focus {
       }
       
       if (goalInput) {
-        goalInput.addEventListener('input', () => {
+        goalInput.addEventListener('input', async () => {
           const g = parseInt(goalInput.value) || 5000;
           updateBudget(g);
+          try {
+            await fetch('/set-goal', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'X-User-ID': userId },
+              body: JSON.stringify({ goal: g })
+            });
+          } catch(e) {}
         });
       }
       
@@ -2746,7 +2768,7 @@ input[type="text"]:focus, input[type="number"]:focus {
       });
       let expenses = [];
       try {
-        const res = await fetch('/expenses');
+        const res = await fetch('/expenses', { headers: { 'X-User-ID': userId } });
         expenses = await res.json();
       } catch (e) { }
       const colors = ['#00e5ff', '#06B6D4', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
@@ -3050,7 +3072,7 @@ input[type="text"]:focus, input[type="number"]:focus {
             addMessage('...', 'ai', true);
             const res = await fetch('/chat', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 'Content-Type': 'application/json', 'X-User-ID': userId },
               body: JSON.stringify({ message: chatMsg, goal, conversation_history: conversationHistory })
             });
             const data = await res.json();
@@ -3085,6 +3107,13 @@ input[type="text"]:focus, input[type="number"]:focus {
           const goalInput = document.getElementById('goalInput');
           if (goalInput) goalInput.value = amt;
           updateBudget(amt);
+          try {
+            fetch('/set-goal', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'X-User-ID': userId },
+              body: JSON.stringify({ goal: amt })
+            });
+          } catch(e) {}
           logs.innerHTML += `<div class="cli-line cli-res">Goal updated to ₹${amt}</div>`;
         }
       } else {

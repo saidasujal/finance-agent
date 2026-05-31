@@ -4,7 +4,16 @@ load_dotenv()
 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-from database import init_db, save_expense, get_expenses, save_chat_message, get_chat_dates, get_chat_by_date
+from database import (
+    init_db,
+    save_expense,
+    get_expenses,
+    save_chat_message,
+    get_chat_dates,
+    get_chat_by_date,
+    save_goal,
+    get_goal
+)
 from agent import parse_expense, generate_insight
 from datetime import datetime
 import time
@@ -16,11 +25,13 @@ init_db()
 
 @app.route('/')
 def index():
+    user_id = request.headers.get('X-User-ID', 'anonymous')
     return send_from_directory('.', 'index.html')
 
 @app.route('/<path:filename>')
 def serve_asset(filename):
     """Serve static assets (images, CSS, JS) from project directory."""
+    user_id = request.headers.get('X-User-ID', 'anonymous')
     allowed_ext = ('.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.css', '.js', '.woff', '.woff2')
     if filename.endswith(allowed_ext):
         return send_from_directory('.', filename)
@@ -28,6 +39,7 @@ def serve_asset(filename):
 
 @app.route('/chat', methods=['POST'])
 def chat():
+    user_id = request.headers.get('X-User-ID', 'anonymous')
     data = request.json
     user_message = data.get('message', '')
     goal = data.get('goal', 5000)
@@ -37,7 +49,7 @@ def chat():
     today = now.strftime('%Y-%m-%d')
 
     # Save user message to history
-    save_chat_message(today, 'user', user_message)
+    save_chat_message(user_id, today, 'user', user_message)
 
     # Parse expense FIRST — before any DB write
     expense = parse_expense(user_message)
@@ -45,7 +57,7 @@ def chat():
     if expense and expense.get('is_expense') and expense.get('amount'):
         # Generate insight BEFORE saving expense
         # This prevents double-save if insight fails
-        expenses_before = get_expenses(now.month, now.year)
+        expenses_before = get_expenses(user_id, now.month, now.year)
 
         # Retry insight up to 3 times
         insight = None
@@ -70,6 +82,7 @@ def chat():
 
         # Now save the expense (only once, after insight succeeds or all retries done)
         save_expense(
+            user_id,
             expense['amount'],
             expense['category'],
             expense['description'],
@@ -77,7 +90,7 @@ def chat():
         )
 
         # Get fresh total after saving
-        expenses_after = get_expenses(now.month, now.year)
+        expenses_after = get_expenses(user_id, now.month, now.year)
         total_spent = sum(e['amount'] for e in expenses_after)
 
         if insight and 'trouble connecting' not in insight:
@@ -87,7 +100,7 @@ def chat():
             pct = round((total_spent / goal * 100) if goal > 0 else 0, 1)
             reply = f"✅ Recorded ₹{expense['amount']} under {expense['category']}. You've spent Rs {total_spent} this month ({pct}% of your Rs {goal} goal). Rs {remaining} remaining."
 
-        save_chat_message(today, 'ai', reply)
+        save_chat_message(user_id, today, 'ai', reply)
         return jsonify({
             'type': 'expense',
             'message': reply,
@@ -96,7 +109,7 @@ def chat():
         })
     else:
         # Not an expense — generate insight with retry
-        expenses = get_expenses(now.month, now.year)
+        expenses = get_expenses(user_id, now.month, now.year)
         insight = None
         for attempt in range(3):
             insight = generate_insight(expenses, goal, user_message, conversation_history)
@@ -105,30 +118,44 @@ def chat():
             if attempt < 2:
                 time.sleep(2)
 
-        save_chat_message(today, 'ai', insight)
+        save_chat_message(user_id, today, 'ai', insight)
         return jsonify({'type': 'insight', 'message': insight})
 
 @app.route('/expenses', methods=['GET'])
 def expenses():
+    user_id = request.headers.get('X-User-ID', 'anonymous')
     now = datetime.now()
-    data = get_expenses(now.month, now.year)
+    data = get_expenses(user_id, now.month, now.year)
     return jsonify(data)
 
 @app.route('/chat-history', methods=['GET'])
 def chat_history():
-    dates = get_chat_dates()
+    user_id = request.headers.get('X-User-ID', 'anonymous')
+    dates = get_chat_dates(user_id)
     return jsonify(dates)
 
 @app.route('/chat-history/<date>', methods=['GET'])
 def chat_history_by_date(date):
-    messages = get_chat_by_date(date)
+    user_id = request.headers.get('X-User-ID', 'anonymous')
+    messages = get_chat_by_date(user_id, date)
     return jsonify(messages)
 
 @app.route('/set-goal', methods=['POST'])
 def set_goal():
+    user_id = request.headers.get('X-User-ID', 'anonymous')
     data = request.json
     goal = data.get('goal', 5000)
+    amount = data.get('amount', goal)
+    now = datetime.now()
+    save_goal(user_id, now.month, now.year, amount)
     return jsonify({'goal': goal})
+
+@app.route('/get-goal', methods=['GET'])
+def get_goal_route():
+    user_id = request.headers.get('X-User-ID', 'anonymous')
+    now = datetime.now()
+    amount = get_goal(user_id, now.month, now.year)
+    return jsonify({'goal': amount})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
