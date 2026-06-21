@@ -54,6 +54,21 @@ def chat():
     # Parse expense FIRST — before any DB write
     expense = parse_expense(user_message)
 
+    # Normalize category aliases the AI might return
+    CATEGORY_ALIASES = {
+        'travel': 'Transport',
+        'groceries': 'Food',
+        'canteen': 'Food',
+        'medicine': 'Health',
+        'medical': 'Health',
+    }
+    if expense and expense.get('category'):
+        raw_cat = expense['category'].strip()
+        normalized = CATEGORY_ALIASES.get(raw_cat.lower(), raw_cat)
+        # Ensure it's in the supported list
+        ALLOWED_CATEGORIES = {'Food', 'Transport', 'Entertainment', 'Shopping', 'Health', 'Education', 'Other'}
+        expense['category'] = normalized if normalized in ALLOWED_CATEGORIES else 'Other'
+
     if expense and expense.get('is_expense') and expense.get('amount'):
         # Generate insight BEFORE saving expense
         # This prevents double-save if insight fails

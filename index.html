@@ -2199,6 +2199,13 @@ input[type="text"]:focus, input[type="number"]:focus {
       if (id === 'chat') loadHistory();
     }
 
+    function isAnalyticsSectionVisible() {
+      const el = document.getElementById('analytics');
+      if (!el) return false;
+      const rect = el.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom > 0;
+    }
+
     // Update active nav on scroll
     let lastSection = '';
     window.addEventListener('scroll', () => {
@@ -2324,7 +2331,9 @@ input[type="text"]:focus, input[type="number"]:focus {
           };
           list.appendChild(btn);
         });
-      } catch (e) {}
+      } catch (e) {
+        console.error('[NexFi] Failed to load history:', e);
+      }
     }
 
     async function openHistoryDate(date, label) {
@@ -2345,7 +2354,12 @@ input[type="text"]:focus, input[type="number"]:focus {
         document.getElementById('chatInput').disabled = true;
         document.getElementById('chatInput').placeholder = 'Viewing history — click "Back to live chat" to chat';
         container.scrollTop = container.scrollHeight;
-      } catch (e) {}
+        // Keep budget bar/ring/simulator live — always reflect latest actual spend
+        const goal = parseInt(document.getElementById('goalInput').value) || 5000;
+        updateBudget(goal);
+      } catch (e) {
+        console.error('[NexFi] Failed to open history date:', e);
+      }
     }
 
     function startNewChat() {
@@ -2416,13 +2430,26 @@ input[type="text"]:focus, input[type="number"]:focus {
           document.getElementById('budgetInfo').textContent = `Spent: ₹${total.toFixed(0)} | Remaining: ₹${remaining.toFixed(0)} | ${pct}% used`;
           drawBudgetRing(total, goal);
           showChartDot();
-          chartsLoaded = false;
+          // Force-refresh ticker tape immediately with latest expenses
+          try {
+            const expRes = await fetch('/expenses', { headers: { 'X-User-ID': userId } });
+            const freshExpenses = await expRes.json();
+            updateTickerTape(freshExpenses);
+            // If analytics section is already visible, refresh charts/heatmap/activity-log now
+            chartsLoaded = false;
+            if (isAnalyticsSectionVisible()) {
+              await loadCharts();
+            }
+          } catch (fetchErr) {
+            console.error('[NexFi] Failed to refresh expenses after save:', fetchErr);
+          }
           updateSimulator();
         } else {
           updateBudget(goal);
         }
         loadHistory();
       } catch (e) {
+        console.error('[NexFi] sendMessage error:', e);
         removeTyping();
         addMessage('Connection error. Make sure the Flask server is running.', 'ai');
       }
@@ -2570,7 +2597,9 @@ input[type="text"]:focus, input[type="number"]:focus {
         drawBudgetRing(total, goal);
         updateTickerTape(expenses);
         updateSimulator();
-      } catch (e) { }
+      } catch (e) {
+        console.error('[NexFi] updateBudget error:', e);
+      }
     }
 
     window.addEventListener('load', async () => {
@@ -2762,6 +2791,7 @@ input[type="text"]:focus, input[type="number"]:focus {
     async function loadCharts() {
       if (chartsLoaded) return;
       chartsLoaded = true;
+      // Always destroy existing Chart.js instances before re-creating
       ['pieChart','barChart','lineChart','budgetChart','topChart'].forEach(id => {
         const c = Chart.getChart(id);
         if (c) c.destroy();
@@ -2770,7 +2800,9 @@ input[type="text"]:focus, input[type="number"]:focus {
       try {
         const res = await fetch('/expenses', { headers: { 'X-User-ID': userId } });
         expenses = await res.json();
-      } catch (e) { }
+      } catch (e) {
+        console.error('[NexFi] loadCharts: failed to fetch expenses:', e);
+      }
       const colors = ['#00e5ff', '#06B6D4', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
       const cats = {};
       expenses.forEach(e => { cats[e.category] = (cats[e.category] || 0) + e.amount; });
@@ -2821,14 +2853,14 @@ input[type="text"]:focus, input[type="number"]:focus {
       try {
         renderHeatmap(expenses);
       } catch(he) {
-        console.error("Heatmap render error:", he);
+        console.error('[NexFi] Heatmap render error:', he);
       }
 
       // Render Detailed Transaction Activity Log
       try {
         renderActivityLog(expenses);
       } catch(le) {
-        console.error("Activity log render error:", le);
+        console.error('[NexFi] Activity log render error:', le);
       }
     }
 
